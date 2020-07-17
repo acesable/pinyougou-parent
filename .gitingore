@@ -1,9 +1,9 @@
 # Windows:
 
 # idea
-/.idea
-/out
-**/target
+.idea/
+out/
+**/target/
 *.iml
 
 # java

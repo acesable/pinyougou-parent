@@ -183,7 +183,7 @@
       <path value="$PROJECT_DIR$/pinyougou-shop-web/src/main/webapp/plugins/select2/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="100" />
     <option name="y" value="20" />
     <option name="width" value="1400" />
@@ -301,7 +301,7 @@
       <workItem from="1594883059440" duration="11593000" />
       <workItem from="1594947980670" duration="162000" />
       <workItem from="1594975067952" duration="194000" />
-      <workItem from="1594978023954" duration="785000" />
+      <workItem from="1594978023954" duration="1112000" />
     </task>
     <task id="LOCAL-00001" summary="品优购项目">
       <created>1594895601424</created>
@@ -328,7 +328,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12734000" />
+    <option name="totallyTimeSpent" value="13061000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -340,7 +340,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3292683" />
