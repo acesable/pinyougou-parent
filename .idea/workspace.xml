@@ -183,7 +183,7 @@
       <path value="$PROJECT_DIR$/pinyougou-shop-web/src/main/webapp/plugins/select2/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="100" />
     <option name="y" value="20" />
     <option name="width" value="1400" />
@@ -201,6 +201,11 @@
             <path>
               <item name="pinyougou-parent" type="b2602c69:ProjectViewProjectNode" />
               <item name="pinyougou-parent" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pinyougou-parent" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pinyougou-parent" type="462c0819:PsiDirectoryNode" />
+              <item name="pinyougou-shop-web" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -301,7 +306,7 @@
       <workItem from="1594883059440" duration="11593000" />
       <workItem from="1594947980670" duration="162000" />
       <workItem from="1594975067952" duration="194000" />
-      <workItem from="1594978023954" duration="1112000" />
+      <workItem from="1594978023954" duration="1327000" />
     </task>
     <task id="LOCAL-00001" summary="品优购项目">
       <created>1594895601424</created>
@@ -328,7 +333,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13061000" />
+    <option name="totallyTimeSpent" value="13276000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -340,7 +345,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3292683" />
@@ -357,7 +362,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2159383" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2159383" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" weight="0.18508998" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -541,6 +546,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
           <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pinyougou-shop-web/src/main/webapp/plugins/select2/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" lean-forward="true" selection-start-column="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>
