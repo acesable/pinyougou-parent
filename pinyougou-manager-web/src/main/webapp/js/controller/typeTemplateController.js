@@ -46,7 +46,7 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.reloadPage();//重新加载
+		        	$scope.reloadList();//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -61,7 +61,7 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
 		typeTemplateService.dele( $scope.ids ).success(
 			function(response){
 				if(response.success){
-					$scope.reloadPage();//刷新列表
+					$scope.reloadList();//刷新列表
 				}						
 			}		
 		);				

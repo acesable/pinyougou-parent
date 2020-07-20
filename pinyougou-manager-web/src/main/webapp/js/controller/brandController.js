@@ -29,7 +29,7 @@ app.controller('brandController',function ($scope, $http, $controller, brandServ
         object.success(
             function (response) {
                 if(response.success){
-                    $scope.reloadPage();
+                    $scope.reloadList();
                 }else{
                     alert(response.message);
                 }
@@ -49,7 +49,7 @@ app.controller('brandController',function ($scope, $http, $controller, brandServ
             function (response) {
                 if(response.success){
                     $scope.ids=[];
-                    $scope.reloadPage();
+                    $scope.reloadList();
                 }else{
                     alert(response.message);
                 }

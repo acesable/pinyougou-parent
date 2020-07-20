@@ -1,4 +1,4 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbBrand;

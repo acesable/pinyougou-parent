@@ -43,7 +43,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.reloadPage();//重新加载
+		        	$scope.reloadList();//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -60,7 +60,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 			function(response){
 				if(response.success){
                     $scope.ids = [];
-					$scope.reloadPage();//刷新列表
+					$scope.reloadList();//刷新列表
 				}						
 			}		
 		);				
