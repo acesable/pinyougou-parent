@@ -1,5 +1,3 @@
-# Windows:
-
 # idea
 .idea/
 out/
@@ -8,10 +6,8 @@ out/
 
 # java
 *.class
-
 # Log file
 *.log
-
 # Package Files #
 *.jar
 *.war
@@ -21,4 +17,8 @@ out/
 *.tar.gz
 *.rar
 
-# My configurations:
+# personal
+
+
+
+
