@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bean:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:bean="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	                    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<!-- 设置页面不登陆也可以访问 -->
@@ -18,24 +21,29 @@
 		<intercept-url pattern="/**" access="ROLE_SELLER"/>
 		<!-- 开启表单登陆功能 -->
 		<form-login   login-page="/shoplogin.html" default-target-url="/admin/index.html" authentication-failure-url="/shoplogin.html" always-use-default-target="true"/>
-		<csrf disabled="true"/>
+		<!-- jsp才有的token认证, 动态生成的,html无法做这种认证,所以关闭 -->
+        <csrf disabled="true"/>
+        <!--头信息:框架选项:策略:允许使用框架页iframe-->
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
+        <!--/logout就是退出地址,实现推出功能-->
         <logout />
 	</http>
 
 	<!-- 认证管理器 -->
 	<authentication-manager>
-		<authentication-provider>
-			<user-service>
-				<user name="admin" password="123123" authorities="ROLE_ADMIN"/>
-			</user-service>
-            <user-service>
-                <user name="zhangqin" password="123123" authorities="ROLE_ADMIN"/>
-            </user-service>
+		<authentication-provider user-service-ref="userDetailService">
 		</authentication-provider>
 	</authentication-manager>
+    <!--认证实现类-->
+    <beans:bean id="userDetailService" class="com.pinyougou.service.UserDetailsServiceImpl">
+        <beans:property name="sellerService" ref="sellerService" />
+    </beans:bean>
 
+    <!-- 引用dubbo 服务 -->
+    <dubbo:application name="pinyougou-shop-web" />
+    <dubbo:registry address="zookeeper://192.168.25.130:2181"/>
+    <dubbo:reference id="sellerService" interface="com.pinyougou.sellergoods.service.SellerService" />
 
-</bean:beans>
+</beans:beans>
