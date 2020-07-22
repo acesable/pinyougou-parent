@@ -49,7 +49,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 				}
 			}		
 		);				
-	}
+	};
 	
 	 
 	//批量删除 
@@ -74,6 +74,40 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
+
+	//商品分类
+    $scope.findItemCatByParentId=function (parentId) {
+        itemCatService.findItemCatByParentId(parentId).success(function (response) {
+            if(response!=''){
+                $scope.list=response;
+            }else{
+                alert('没有下级列表了');
+            }
+        });
+    };
+
+    $scope.grade=1;
+
+    $scope.setGrade = function (value) {
+        $scope.grade=value;
+    };
+
+    $scope.selectItemCatId=function (grade,p_entity) {
+
+        if(grade==1){
+            $scope.entity_1=null;
+            $scope.entity_2=null;
+        }
+        if (grade == 2) {
+            $scope.entity_1=p_entity;
+            $scope.entity_2=null;
+        }
+        if (grade == 3) {
+            $scope.entity_2=p_entity;
+        }
+
+        $scope.findItemCatByParentId(p_entity.id);
+    }
     
 });	
