@@ -110,4 +110,5 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
     $scope.removeCustomAttributeItem = function (index) {
         $scope.entity.customAttributeItems.splice(index,1);
     };
+
 });

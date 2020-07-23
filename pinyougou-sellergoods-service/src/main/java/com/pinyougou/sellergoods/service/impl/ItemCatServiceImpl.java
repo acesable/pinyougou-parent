@@ -74,8 +74,13 @@ public class ItemCatServiceImpl implements ItemCatService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			itemCatMapper.deleteByPrimaryKey(id);
-		}		
+		    TbItemCatExample tbItemCatExample = new TbItemCatExample();
+            Criteria criteria = tbItemCatExample.createCriteria();
+            criteria.andParentIdEqualTo(id);
+            if (itemCatMapper.countByExample(tbItemCatExample) == 0) {
+                itemCatMapper.deleteByPrimaryKey(id);
+            }
+		}
 	}
 	
 	
