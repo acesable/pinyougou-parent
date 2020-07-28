@@ -11,5 +11,11 @@
 
     <artifactId>pinyougou-common</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.csource.fastdfs</groupId>
+            <artifactId>fastdfs</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </dependencies>
 </project>

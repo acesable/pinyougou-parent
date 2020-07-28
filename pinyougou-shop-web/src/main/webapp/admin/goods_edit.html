@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/goodsController.js"></script>
     <script type="text/javascript" src="../js/service/goodsService.js"></script>
+	<script type="text/javascript" src="../js/service/uploadService.js"></script>
     
     
       
@@ -138,7 +139,7 @@
                                 <div class="row data-type">                                  
 								 <!-- 颜色图片 -->
 								 <div class="btn-group">
-					                 <button type="button" class="btn btn-default" title="新建" data-target="#uploadModal"  data-toggle="modal"  ><i class="fa fa-file-o"></i> 新建</button>
+					                 <button type="button" class="btn btn-default" title="新建" ng-click="image_entity={}" data-target="#uploadModal"  data-toggle="modal"  ><i class="fa fa-file-o"></i> 新建</button>
                              		 <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>                 
 					             </div>
 								 
@@ -152,13 +153,13 @@
 											    <th class="sorting">图片</th>
 							            </thead>
 					                    <tbody>
-					                      <tr>
-					                            <td><input  type="checkbox" ></td> 
+					                      <tr ng-repeat="pojo in goods.tbGoodsDesc.itemImages">
+					                            <td><input  type="checkbox" ></td>
 									            <td>
-									            	
+													{{pojo.color}}
 									            </td>
 									            <td>
-									           		<img alt="" src="" width="100px" height="100px">	            	 
+									           		<img alt="" src="{{pojo.url}}" width="100px" height="100px">
 									            </td>
 					                      </tr>
 					                    </tbody>
