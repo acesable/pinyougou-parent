@@ -33,11 +33,13 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 	
 	//新增
 	$scope.add=function(){
+        $scope.entity.tbGoodsDesc.introduction = editor.html();
         goodsService.add( $scope.entity).success(
             function(response){
                 if(response.success){
                     alert('新增成功!');
                     $scope.entity = {};
+                    editor.html('');
                 }else{
                     alert(response.message);
                 }
