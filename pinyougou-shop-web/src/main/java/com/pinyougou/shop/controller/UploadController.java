@@ -14,15 +14,15 @@ public class UploadController {
     private String fileServerUrl;
 
     @RequestMapping("/upload")
-    public Result upload(MultipartFile multipartFile) {
+    public Result upload(MultipartFile file) {
         try {
             // 1. 获取文件全名和文件拓展名
-            String filename = multipartFile.getOriginalFilename();
+            String filename = file.getOriginalFilename();
             String exdentname = filename.substring(filename.lastIndexOf(".")+1);
             // 2. 创建一个fastDFS客户端
             util.FastDFSClient fastDFSClient = new FastDFSClient("classpath:config/fdfs_client.conf");
             // 3. 执行上传操作
-            String url = fileServerUrl+fastDFSClient.uploadFile(multipartFile.getBytes(), exdentname);
+            String url = fileServerUrl+fastDFSClient.uploadFile(file.getBytes(), exdentname);
             return new Result(true, url);
         } catch (Exception e) {
             e.printStackTrace();

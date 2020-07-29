@@ -1,13 +1,14 @@
 app.service("uploadService", function ($http) {
 
+    //上传文件
     this.uploadFile=function () {
         var formData = new FormData();
         formData.append('file',file.files[0]);
-        $http({
+        return $http({
             url:'../upload.do',
-            method:'post',
+            method:'POST',
             data:formData,
-            header:{'Content-Type':undefined},
+            headers:{'Content-Type':undefined},
             transformRequest: angular.identity
         });
     }

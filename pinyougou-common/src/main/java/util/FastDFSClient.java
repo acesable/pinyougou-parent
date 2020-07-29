@@ -18,12 +18,22 @@ public class FastDFSClient {
 		if (conf.contains("classpath:")) {
 			conf = conf.replace("classpath:", this.getClass().getResource("/").getPath());
 		}
+        conf = conf.replaceAll("%20", " ");//有空格的路径
 		ClientGlobal.init(conf);
 		trackerClient = new TrackerClient();
 		trackerServer = trackerClient.getConnection();
 		storageServer = null;
 		storageClient = new StorageClient1(trackerServer, storageServer);
 	}
+
+    public static void main(String[] args) throws Exception {
+        FastDFSClient fastDFSClient = new FastDFSClient("123");
+        String path = fastDFSClient.getClass().getResource("/").getPath();
+
+        System.out.println(path);
+        path = path.replaceAll("%20"," ");
+        System.out.println(path);
+    }
 	
 	/**
 	 * 上传文件方法

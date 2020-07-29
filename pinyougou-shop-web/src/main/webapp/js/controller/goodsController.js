@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService){
+app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -40,6 +40,7 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
                     alert('新增成功!');
                     $scope.entity = {};
                     editor.html('');
+                    $scope.entity.tbGoodsDesc.itemImages = [];
                 }else{
                     alert(response.message);
                 }
@@ -76,22 +77,54 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 	$scope.uploadFile=function () {
 		uploadService.uploadFile().success(function (response) {
 			if(response.success){
-				alert('上传成功!');
-
+				// alert('上传成功!');
+                alert(response.message);
+                $scope.image_entity.url=response.message;
 			}else{
 				alert(response.message);
 			}
-
 		}).error(function () {
 			alert('上传发生错误');
 		});
-	}
+	};
 
 	//添加上传图片列表
-	$scope.goods={tbGoodsDesc:{itemImages: []}};//定义页面实体结构
-	$scope.add_image_entity = function () {
-		$scope.goods.tbGoodsDesc.itemImages.push($scope.image_entity);
+	$scope.entity={tbGoods:{},tbGoodsDesc:{itemImages: []}};//定义页面实体结构
 
+	$scope.add_image_entity = function () {
+		$scope.entity.tbGoodsDesc.itemImages.push($scope.image_entity);
 	};
-    
+
+    $scope.del_image_entity = function ($index) {
+        $scope.entity.tbGoodsDesc.itemImages.splice($index, 1);
+    };
+
+    //查询商品一级分类列表
+    $scope.getItemCat1List=function () {
+        itemCatService.findItemCatByParentId(0).success(function (response) {
+            $scope.itemCat1List=response;
+        });
+    };
+
+    //查询商品二级分类列表
+    $scope.$watch('entity.tbGoods.category1Id', function (newValue, oldValue) {
+        itemCatService.findItemCatByParentId(newValue).success(function (response) {
+            $scope.itemCat2List=response;
+        });
+    });
+
+    //查询商品三级分类列表
+    $scope.$watch('entity.tbGoods.category2Id', function (newValue, oldValue) {
+        itemCatService.findItemCatByParentId(newValue).success(function (response) {
+            $scope.itemCat3List=response;
+        });
+    });
+
+    //查询商品模板ID
+    $scope.$watch('entity.tbGoods.category3Id', function (newValue, oldValue) {
+        itemCatService.findOne(newValue).success(function (response) {
+            $scope.entity.tbGoods.TypeTemplateId=response.typeId;
+        });
+    });
+
 });	
