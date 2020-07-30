@@ -33,4 +33,8 @@ app.service('typeTemplateService',function($http){
     this.selectTypeTemplateList = function () {
 	    return $http.get('../typeTemplate/selectTypeTemplateList.do');
     };
+	//商品规格选项下拉列表
+	this.selectSpecificationItems = function (id) {
+		return $http.get('../typeTemplate/selectSpecificationItems.do?id='+id);
+	}
 });

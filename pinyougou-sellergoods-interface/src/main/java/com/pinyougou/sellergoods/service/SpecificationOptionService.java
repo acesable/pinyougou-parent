@@ -57,5 +57,6 @@ public interface SpecificationOptionService {
 	 * @return
 	 */
 	public PageResult findPage(TbSpecificationOption specificationOption, int pageNum, int pageSize);
+
 	
 }

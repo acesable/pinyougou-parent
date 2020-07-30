@@ -64,5 +64,9 @@ public interface TypeTemplateService {
      * 类型下拉列表
      */
     List<Map> selectTypeTemplateList();
-	
+
+	/**
+	 * 商品规格选项下拉列表
+	 */
+	List<Map> selectSpecificationItems(Long id);
 }

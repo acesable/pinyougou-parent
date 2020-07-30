@@ -132,6 +132,12 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
             $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
             $scope.entity.tbGoodsDesc.customAttributeItems= JSON.parse($scope.typeTemplate.customAttributeItems);
 		});
+		//商品规格选项下拉列表
+		typeTemplateService.selectSpecificationItems(newValue).success(function (response) {
+			$scope.specificationItems=response;
+
+		});
 	});
+
 
 });	
