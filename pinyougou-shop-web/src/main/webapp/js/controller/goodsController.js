@@ -40,7 +40,6 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
                     alert('新增成功!');
                     $scope.entity = {};
                     editor.html('');
-                    $scope.entity.tbGoodsDesc.itemImages = [];
                 }else{
                     alert(response.message);
                 }
@@ -78,7 +77,6 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		uploadService.uploadFile().success(function (response) {
 			if(response.success){
 				// alert('上传成功!');
-                alert(response.message);
                 $scope.image_entity.url=response.message;
 			}else{
 				alert(response.message);
@@ -123,15 +121,16 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
     //查询商品模板ID
     $scope.$watch('entity.tbGoods.category3Id', function (newValue, oldValue) {
         itemCatService.findOne(newValue).success(function (response) {
-            $scope.entity.tbGoods.TypeTemplateId=response.typeId;
+            $scope.entity.tbGoods.typeTemplateId=response.typeId;
         });
     });
 
 	//查询品牌列表
-	$scope.$watch('entity.tbGoods.TypeTemplateId', function (newValue, oldValue) {
+	$scope.$watch('entity.tbGoods.typeTemplateId', function (newValue, oldValue) {
 		typeTemplateService.findOne(newValue).success(function (response) {
 			$scope.typeTemplate=response;
-			$scope.typeTemplate = JSON.parse($scope.typeTemplate.brandIds);
+            $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
+            $scope.entity.tbGoodsDesc.customAttributeItems= JSON.parse($scope.typeTemplate.customAttributeItems);
 		});
 	});
 
