@@ -87,7 +87,7 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 	};
 
 	//添加上传图片列表
-	$scope.entity={tbGoods:{},tbGoodsDesc:{itemImages: []}};//定义页面实体结构
+	$scope.entity={tbGoods:{},tbGoodsDesc:{itemImages: [],specificationItems:[]}};//定义页面实体结构
 
 	$scope.add_image_entity = function () {
 		$scope.entity.tbGoodsDesc.itemImages.push($scope.image_entity);
@@ -138,6 +138,23 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 
 		});
 	});
-
+	
+	//更新选择的商品规格选项
+    $scope.updateSpecificationItems = function ($event, name, value) {
+        var map = $scope.findByKeyValue($scope.entity.tbGoodsDesc.specificationItems, 'attributeName', name);
+        //还没此规格
+        if (map == null) {
+            $scope.entity.tbGoodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
+        }else{
+            if($event.target.checked) {
+                map.attributeValue.push(value);
+            }else{
+                map.attributeValue.splice(map.attributeValue.indexOf(value), 1);
+                if(map.attributeValue.length==0){
+                    $scope.entity.tbGoodsDesc.specificationItems.splice($scope.entity.tbGoodsDesc.specificationItems.indexOf(map), 1);
+                }
+            }
+        }
+    };
 
 });	

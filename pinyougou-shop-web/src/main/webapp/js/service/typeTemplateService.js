@@ -29,10 +29,6 @@ app.service('typeTemplateService',function($http){
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../typeTemplate/search.do?page='+page+"&rows="+rows, searchEntity);
 	}
-	//类型下拉列表
-    this.selectTypeTemplateList = function () {
-	    return $http.get('../typeTemplate/selectTypeTemplateList.do');
-    };
 	//商品规格选项下拉列表
 	this.selectSpecificationItems = function (id) {
 		return $http.get('../typeTemplate/selectSpecificationItems.do?id='+id);

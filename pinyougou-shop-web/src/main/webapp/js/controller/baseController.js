@@ -36,5 +36,14 @@ app.controller('baseController',function ($scope) {
             value+=json[i][key];
         }
         return value;
-    }
+    };
+
+    $scope.findByKeyValue = function (list, key, value) {
+        for(var i=0;i<list.length;i++){
+            if (value == list[i][key]) {
+                return list[i];
+            }
+        }
+        return null;
+    };
 });

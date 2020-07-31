@@ -193,7 +193,6 @@
                             	<p>
                             	
                             	<div>
-                            	
 	                                <div class="row data-type" >
 	                                
 		                                <div ng-repeat="pojo in specificationItems">
@@ -201,16 +200,12 @@
 					                        <div class="col-md-10 data" >
 					                               
 					                            <span ng-repeat="option in pojo.options">
-					                            	<input  type="checkbox" >{{option.optionName}}
-					                            </span>  	
-
-
+					                            	<input type="checkbox" ng-click="updateSpecificationItems($event,pojo.text,option.optionName)" >{{option.optionName}}
+					                            </span>
 					                        </div>
 		                                </div>   
-
-
 	                                </div>
-	
+                                    {{entity.tbGoodsDesc.specificationItems}}
 	                                
 	                                <div class="row data-type">
 	                                	 <table class="table table-bordered table-striped table-hover dataTable">

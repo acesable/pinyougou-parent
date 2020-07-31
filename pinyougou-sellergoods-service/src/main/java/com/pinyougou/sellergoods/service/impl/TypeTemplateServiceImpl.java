@@ -123,7 +123,6 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	@Override
 	public List<Map> selectSpecificationItems(Long id) {
 		TbTypeTemplate tbTypeTemplate = typeTemplateMapper.selectByPrimaryKey(id);
-		System.out.println(tbTypeTemplate);
 		List<Map> maps = JSONArray.parseArray(tbTypeTemplate.getSpecIds(), Map.class);
 		for (Map map:maps) {
 
