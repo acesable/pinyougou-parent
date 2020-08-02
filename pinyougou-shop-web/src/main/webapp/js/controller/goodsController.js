@@ -157,4 +157,26 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
         }
     };
 
+    //生成商品规格列表
+	$scope.createSpecificationItemList = function () {
+		var items = $scope.entity.tbGoodsDesc.specificationItems;
+		$scope.entity.tbItem=[{spec:{},price:'0',num:'9999',status:'0',isDefault:'0'}];
+		for (var i = 0; i < items.length; i++) {
+			$scope.entity.tbItem=addSpec($scope.entity.tbItem, items[i].attributeName, items[i].attributeValue);
+		}
+	};
+
+	var addSpec = function (list,columnName,columnValues) {
+		var newList = [];
+		for (var i = 0; i < list.length; i++) {
+			var oldRow = list[i];
+			for (var j = 0; j < columnValues.length; j++) {
+				var newRow = JSON.parse(JSON.stringify(oldRow));//深克隆
+				newRow.spec[columnName]=columnValues[j];
+				newList.push(newRow);
+			}
+		}
+		return newList;
+	}
+
 });	
