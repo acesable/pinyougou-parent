@@ -33,7 +33,7 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 	
 	//新增
 	$scope.add=function(){
-        $scope.entity.tbGoodsDesc.introduction = editor.html();
+        $scope.entity.goodsDesc.introduction = editor.html();
         goodsService.add( $scope.entity).success(
             function(response){
                 if(response.success){
@@ -87,14 +87,14 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 	};
 
 	//添加上传图片列表
-	$scope.entity={tbGoods:{},tbGoodsDesc:{itemImages: [],specificationItems:[]}};//定义页面实体结构
+	$scope.entity={goods:{},goodsDesc:{itemImages: [],specificationItems:[]}};//定义页面实体结构
 
 	$scope.add_image_entity = function () {
-		$scope.entity.tbGoodsDesc.itemImages.push($scope.image_entity);
+		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
 	};
 
     $scope.del_image_entity = function ($index) {
-        $scope.entity.tbGoodsDesc.itemImages.splice($index, 1);
+        $scope.entity.goodsDesc.itemImages.splice($index, 1);
     };
 
     //查询商品一级分类列表
@@ -105,32 +105,32 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
     };
 
     //查询商品二级分类列表
-    $scope.$watch('entity.tbGoods.category1Id', function (newValue, oldValue) {
+    $scope.$watch('entity.goods.category1Id', function (newValue, oldValue) {
         itemCatService.findItemCatByParentId(newValue).success(function (response) {
             $scope.itemCat2List=response;
         });
     });
 
     //查询商品三级分类列表
-    $scope.$watch('entity.tbGoods.category2Id', function (newValue, oldValue) {
+    $scope.$watch('entity.goods.category2Id', function (newValue, oldValue) {
         itemCatService.findItemCatByParentId(newValue).success(function (response) {
             $scope.itemCat3List=response;
         });
     });
 
     //查询商品模板ID
-    $scope.$watch('entity.tbGoods.category3Id', function (newValue, oldValue) {
+    $scope.$watch('entity.goods.category3Id', function (newValue, oldValue) {
         itemCatService.findOne(newValue).success(function (response) {
-            $scope.entity.tbGoods.typeTemplateId=response.typeId;
+            $scope.entity.goods.typeTemplateId=response.typeId;
         });
     });
 
 	//查询品牌列表
-	$scope.$watch('entity.tbGoods.typeTemplateId', function (newValue, oldValue) {
+	$scope.$watch('entity.goods.typeTemplateId', function (newValue, oldValue) {
 		typeTemplateService.findOne(newValue).success(function (response) {
 			$scope.typeTemplate=response;
             $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
-            $scope.entity.tbGoodsDesc.customAttributeItems= JSON.parse($scope.typeTemplate.customAttributeItems);
+            $scope.entity.goodsDesc.customAttributeItems= JSON.parse($scope.typeTemplate.customAttributeItems);
 		});
 		//商品规格选项下拉列表
 		typeTemplateService.selectSpecificationItems(newValue).success(function (response) {
@@ -141,17 +141,17 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 	
 	//更新选择的商品规格选项
     $scope.updateSpecificationItems = function ($event, name, value) {
-        var map = $scope.findByKeyValue($scope.entity.tbGoodsDesc.specificationItems, 'attributeName', name);
+        var map = $scope.findByKeyValue($scope.entity.goodsDesc.specificationItems, 'attributeName', name);
         //还没此规格
         if (map == null) {
-            $scope.entity.tbGoodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
+            $scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]});
         }else{
             if($event.target.checked) {
                 map.attributeValue.push(value);
             }else{
                 map.attributeValue.splice(map.attributeValue.indexOf(value), 1);
                 if(map.attributeValue.length==0){
-                    $scope.entity.tbGoodsDesc.specificationItems.splice($scope.entity.tbGoodsDesc.specificationItems.indexOf(map), 1);
+                    $scope.entity.goodsDesc.specificationItems.splice($scope.entity.goodsDesc.specificationItems.indexOf(map), 1);
                 }
             }
         }
@@ -159,10 +159,10 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 
     //生成商品规格列表
 	$scope.createSpecificationItemList = function () {
-		var items = $scope.entity.tbGoodsDesc.specificationItems;
-		$scope.entity.tbItem=[{spec:{},price:'0',num:'9999',status:'0',isDefault:'0'}];
+		var items = $scope.entity.goodsDesc.specificationItems;
+		$scope.entity.itemList=[{spec:{},price:'0',num:'9999',status:'0',isDefault:'0'}];
 		for (var i = 0; i < items.length; i++) {
-			$scope.entity.tbItem=addSpec($scope.entity.tbItem, items[i].attributeName, items[i].attributeValue);
+			$scope.entity.itemList=addSpec($scope.entity.itemList, items[i].attributeName, items[i].attributeValue);
 		}
 	};
 

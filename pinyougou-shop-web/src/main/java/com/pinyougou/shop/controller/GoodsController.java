@@ -52,7 +52,7 @@ public class GoodsController {
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody Goods goods){
-        goods.getTbGoods().setSellerId(SecurityContextHolder.getContext().getAuthentication().getName());
+        goods.getGoods().setSellerId(SecurityContextHolder.getContext().getAuthentication().getName());
 		try {
 			goodsService.add(goods);
 			return new Result(true, "增加成功");

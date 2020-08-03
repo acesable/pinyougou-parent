@@ -1,12 +1,17 @@
 package com.pinyougou.sellergoods.service.impl;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import com.pinyougou.mapper.TbGoodsDescMapper;
+import com.alibaba.druid.support.json.JSONParser;
+import com.alibaba.fastjson.JSON;
+import com.pinyougou.mapper.*;
+import com.pinyougou.pojo.TbItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsExample;
 import com.pinyougou.pojo.TbGoodsExample.Criteria;
@@ -47,15 +52,52 @@ public class GoodsServiceImpl implements GoodsService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+    private TbItemMapper tbItemMapper;
+
+	@Autowired
+    private TbItemCatMapper tbItemCatMapper;
+
+	@Autowired
+    private TbBrandMapper tbBrandMapper;
+
+	@Autowired
+    private TbSellerMapper tbSellerMapper;
+
 	/**
 	 * 增加
 	 */
 	@Override
 	public void add(Goods goods) {
-        goods.getTbGoods().setAuditStatus("0");// 状态未审核
-		goodsMapper.insert(goods.getTbGoods());
-		goods.getTbGoodsDesc().setGoodsId(goods.getTbGoods().getId());
-        goodsDescMapper.insert(goods.getTbGoodsDesc());
+        goods.getGoods().setAuditStatus("0");// 状态未审核
+		goodsMapper.insert(goods.getGoods());
+		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
+        goodsDescMapper.insert(goods.getGoodsDesc());
+
+        TbGoods tbGoods = goods.getGoods();
+        for (TbItem item : goods.getItemList()) {
+            String title = tbGoods.getGoodsName();
+            Map<String,Object> map = JSON.parseObject(item.getSpec());
+            for (String key : map.keySet()) {
+                title += " "+map.get(key);
+            }
+            item.setTitle(title);
+            item.setSellPoint(tbGoods.getCaption());//卖点
+            List<Map> maps = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
+            if (maps.size() > 0) {
+                item.setImage((String)maps.get(0).get("url"));
+            }
+            item.setCategoryid(tbGoods.getCategory3Id());//三级分类ID
+            item.setCreateTime(new Date());
+            item.setUpdateTime(new Date());
+            item.setGoodsId(tbGoods.getId());
+            item.setSellerId(tbGoods.getSellerId());
+            String category = tbItemCatMapper.selectByPrimaryKey(tbGoods.getCategory3Id()).getName();
+            item.setCategory(category);
+            item.setBrand(tbBrandMapper.selectByPrimaryKey(tbGoods.getBrandId()).getName());
+            item.setSeller(tbSellerMapper.selectByPrimaryKey(tbGoods.getSellerId()).getNickName());
+            tbItemMapper.insert(item);
+        }
 	}
 
 	
