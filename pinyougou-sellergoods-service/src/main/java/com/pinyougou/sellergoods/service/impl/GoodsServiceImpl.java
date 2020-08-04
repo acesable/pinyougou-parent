@@ -73,32 +73,51 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsMapper.insert(goods.getGoods());
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
         goodsDescMapper.insert(goods.getGoodsDesc());
-
         TbGoods tbGoods = goods.getGoods();
-        for (TbItem item : goods.getItemList()) {
-            String title = tbGoods.getGoodsName();
-            Map<String,Object> map = JSON.parseObject(item.getSpec());
-            for (String key : map.keySet()) {
-                title += " "+map.get(key);
+
+        if ("1".equals(tbGoods.getIsEnableSpec())) {
+            for (TbItem item : goods.getItemList()) {
+                String title = tbGoods.getGoodsName();
+                Map<String,Object> map = JSON.parseObject(item.getSpec());
+                for (String key : map.keySet()) {
+                    title += " "+map.get(key);
+                }
+                item.setTitle(title);
+                setDefaultItemValues(item, goods);
+                tbItemMapper.insert(item);
             }
-            item.setTitle(title);
-            item.setSellPoint(tbGoods.getCaption());//卖点
-            List<Map> maps = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
-            if (maps.size() > 0) {
-                item.setImage((String)maps.get(0).get("url"));
-            }
-            item.setCategoryid(tbGoods.getCategory3Id());//三级分类ID
-            item.setCreateTime(new Date());
-            item.setUpdateTime(new Date());
-            item.setGoodsId(tbGoods.getId());
-            item.setSellerId(tbGoods.getSellerId());
-            String category = tbItemCatMapper.selectByPrimaryKey(tbGoods.getCategory3Id()).getName();
-            item.setCategory(category);
-            item.setBrand(tbBrandMapper.selectByPrimaryKey(tbGoods.getBrandId()).getName());
-            item.setSeller(tbSellerMapper.selectByPrimaryKey(tbGoods.getSellerId()).getNickName());
+        }else{
+            TbItem item = new TbItem();
+            item.setTitle(tbGoods.getGoodsName());
+            item.setPrice(tbGoods.getPrice());
+            item.setNum(999999);
+            item.setStatus("0");
+            item.setIsDefault("1");
+
+            setDefaultItemValues(item, goods);
             tbItemMapper.insert(item);
         }
+
+
 	}
+
+    private void setDefaultItemValues(TbItem item, Goods goods) {
+	    TbGoods tbGoods = goods.getGoods();
+        item.setSellPoint(tbGoods.getCaption());//卖点
+        List<Map> maps = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
+        if (maps.size() > 0) {
+            item.setImage((String)maps.get(0).get("url"));
+        }
+        item.setCategoryid(tbGoods.getCategory3Id());//三级分类ID
+        item.setCreateTime(new Date());
+        item.setUpdateTime(new Date());
+        item.setGoodsId(tbGoods.getId());
+        item.setSellerId(tbGoods.getSellerId());
+        String category = tbItemCatMapper.selectByPrimaryKey(tbGoods.getCategory3Id()).getName();
+        item.setCategory(category);
+        item.setBrand(tbBrandMapper.selectByPrimaryKey(tbGoods.getBrandId()).getName());
+        item.setSeller(tbSellerMapper.selectByPrimaryKey(tbGoods.getSellerId()).getNickName());
+    }
 
 	
 	/**
@@ -115,8 +134,11 @@ public class GoodsServiceImpl implements GoodsService {
 	 * @return
 	 */
 	@Override
-	public TbGoods findOne(Long id){
-		return goodsMapper.selectByPrimaryKey(id);
+	public Goods findOne(Long id){
+	    Goods goods = new Goods();
+	    goods.setGoods(goodsMapper.selectByPrimaryKey(id));
+        goods.setGoodsDesc(goodsDescMapper.selectByPrimaryKey(id));
+		return goods;
 	}
 
 	/**
@@ -138,8 +160,9 @@ public class GoodsServiceImpl implements GoodsService {
 		Criteria criteria = example.createCriteria();
 		
 		if(goods!=null){			
-						if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
-				criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
+		    if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
+				// criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
+                criteria.andSellerIdEqualTo(goods.getSellerId());
 			}
 			if(goods.getGoodsName()!=null && goods.getGoodsName().length()>0){
 				criteria.andGoodsNameLike("%"+goods.getGoodsName()+"%");

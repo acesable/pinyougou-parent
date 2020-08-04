@@ -29,13 +29,11 @@
 	<script type="text/javascript" src="../js/service/uploadService.js"></script>
     <script type="text/javascript" src="../js/service/itemCatService.js"></script>
 	<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
-    
-      
-    
-    
+
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="getItemCat1List()" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="getItemCat1List();findOne()" >
 
             <!-- 正文区域 -->
             <section class="content">
@@ -186,13 +184,13 @@
                             	<div class="row data-type">
 	                            	<div class="col-md-2 title">是否启用规格</div>
 			                        <div class="col-md-10 data">
-			                        	<input type="checkbox" >
+			                        	<input type="checkbox" ng-model="entity.goods.isEnableSpec" ng-true-value="1" ng-false-value="0" >
 			                            <button type="button" class="btn btn-default" title="自定义规格" data-target="#mySpecModal"  data-toggle="modal"  ><i class="fa fa-file-o"></i> 自定义规格</button>               
 			                        </div>
                             	</div>
                             	<p>
                             	
-                            	<div>
+                            	<div ng-if="entity.goods.isEnableSpec=='1'">
 	                                <div class="row data-type" >
 	                                
 		                                <div ng-repeat="pojo in specificationItems">
@@ -200,7 +198,8 @@
 					                        <div class="col-md-10 data" >
 					                               
 					                            <span ng-repeat="option in pojo.options">
-					                            	<input type="checkbox" ng-click="updateSpecificationItems($event,pojo.text,option.optionName);createSpecificationItemList()" >{{option.optionName}}
+					                            	<input type="checkbox" ng-checked="isChecked(pojo.text,option.optionName)"
+                                                           ng-click="updateSpecificationItems($event,pojo.text,option.optionName);createSpecificationItemList()" >{{option.optionName}}
 					                            </span>
 					                        </div>
 		                                </div>   
