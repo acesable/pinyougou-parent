@@ -68,8 +68,12 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody TbGoods goods){
-		try {
+	public Result update(@RequestBody Goods goods){
+        String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!sellerId.equals(goods.getGoods().getSellerId())) {
+            return new Result(false, "修改报错");
+        }
+        try {
 			goodsService.update(goods);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
@@ -97,7 +101,7 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, "删除失败");
@@ -106,7 +110,7 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return

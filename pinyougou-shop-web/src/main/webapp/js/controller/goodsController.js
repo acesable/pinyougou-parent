@@ -36,6 +36,9 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
                 $scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages);
                 $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
                 $scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems);
+                for(var i=0;i<$scope.entity.itemList.length;i++){
+                    $scope.entity.itemList[i].spec = JSON.parse($scope.entity.itemList[i].spec);
+                }
 			}
 		);				
 	};
@@ -54,7 +57,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 	
 	//新增
 	$scope.add=function(){
-        $scope.entity.goodsDesc.introduction = editor.html();
+        $scope.entity.goodsDesc.introduction = editor.html();//获取富文本内容
         goodsService.add( $scope.entity).success(
             function(response){
                 if(response.success){
@@ -67,6 +70,27 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
             }
 		);				
 	};
+
+    //保存
+    $scope.save=function(){
+        var serviceObject;//服务层对象
+        $scope.entity.goodsDesc.introduction = editor.html();//获取富文本内容
+        if($scope.entity.goods.id!=null){//如果有ID
+            serviceObject=goodsService.update( $scope.entity ); //修改
+        }else{
+            serviceObject=goodsService.add( $scope.entity  );//增加
+        }
+        serviceObject.success(
+            function(response){
+                if(response.success){
+                    alert('保存成功!');
+                    window.location.href='goods.html';
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    };
 	
 	 
 	//批量删除 

@@ -8,6 +8,7 @@ import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.mapper.*;
 import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.TbItemExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -73,8 +74,18 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsMapper.insert(goods.getGoods());
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
         goodsDescMapper.insert(goods.getGoodsDesc());
-        TbGoods tbGoods = goods.getGoods();
+        setItemValue(goods);
+	}
 
+    private void setItemValue(Goods goods) {
+        TbGoods tbGoods = goods.getGoods();
+        //如果是更新的话,先删除改goods的所有item记录,重新存入
+        if (goods.getGoods().getId() != null) {
+            TbItemExample tbItemExample = new TbItemExample();
+            TbItemExample.Criteria criteria = tbItemExample.createCriteria();
+            criteria.andGoodsIdEqualTo(goods.getGoods().getId());
+            tbItemMapper.deleteByExample(tbItemExample);
+        }
         if ("1".equals(tbGoods.getIsEnableSpec())) {
             for (TbItem item : goods.getItemList()) {
                 String title = tbGoods.getGoodsName();
@@ -83,7 +94,7 @@ public class GoodsServiceImpl implements GoodsService {
                     title += " "+map.get(key);
                 }
                 item.setTitle(title);
-                setDefaultItemValues(item, goods);
+                setDefaultItemValue(item, goods);
                 tbItemMapper.insert(item);
             }
         }else{
@@ -94,14 +105,12 @@ public class GoodsServiceImpl implements GoodsService {
             item.setStatus("0");
             item.setIsDefault("1");
 
-            setDefaultItemValues(item, goods);
+            setDefaultItemValue(item, goods);
             tbItemMapper.insert(item);
         }
+    }
 
-
-	}
-
-    private void setDefaultItemValues(TbItem item, Goods goods) {
+    private void setDefaultItemValue(TbItem item, Goods goods) {
 	    TbGoods tbGoods = goods.getGoods();
         item.setSellPoint(tbGoods.getCaption());//卖点
         List<Map> maps = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
@@ -124,8 +133,10 @@ public class GoodsServiceImpl implements GoodsService {
 	 * 修改
 	 */
 	@Override
-	public void update(TbGoods goods){
-		goodsMapper.updateByPrimaryKey(goods);
+	public void update(Goods goods){
+		goodsMapper.updateByPrimaryKey(goods.getGoods());
+        goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
+        setItemValue(goods);
 	}	
 	
 	/**
@@ -138,7 +149,12 @@ public class GoodsServiceImpl implements GoodsService {
 	    Goods goods = new Goods();
 	    goods.setGoods(goodsMapper.selectByPrimaryKey(id));
         goods.setGoodsDesc(goodsDescMapper.selectByPrimaryKey(id));
-		return goods;
+        TbItemExample tbItemExample = new TbItemExample();
+        TbItemExample.Criteria criteria = tbItemExample.createCriteria();
+        criteria.andGoodsIdEqualTo(id);
+        List<TbItem> tbItems = tbItemMapper.selectByExample(tbItemExample);
+        goods.setItemList(tbItems);
+        return goods;
 	}
 
 	/**
