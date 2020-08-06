@@ -1,10 +1,8 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.mapper.*;
 import com.pinyougou.pojo.TbItem;
@@ -19,6 +17,7 @@ import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 import pojoGroup.Goods;
 
 /**
@@ -27,6 +26,7 @@ import pojoGroup.Goods;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -71,7 +71,9 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void add(Goods goods) {
         goods.getGoods().setAuditStatus("0");// 状态未审核
+        goods.getGoods().setIsMarketable("1");//新增商品默认为:已上架 状态
 		goodsMapper.insert(goods.getGoods());
+		int x=1/0;
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
         goodsDescMapper.insert(goods.getGoodsDesc());
         setItemValue(goods);
@@ -136,6 +138,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public void update(Goods goods){
 		goodsMapper.updateByPrimaryKey(goods.getGoods());
         goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
+        int x = 1/0;
         setItemValue(goods);
 	}	
 	
@@ -163,8 +166,11 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			goodsMapper.deleteByPrimaryKey(id);
-		}		
+//			goodsMapper.deleteByPrimaryKey(id);
+            TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+            tbGoods.setIsDelete("1");
+            goodsMapper.updateByPrimaryKey(tbGoods);
+        }
 	}
 	
 	
@@ -174,7 +180,7 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		TbGoodsExample example=new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
-		
+
 		if(goods!=null){			
 		    if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
 				// criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
@@ -201,11 +207,29 @@ public class GoodsServiceImpl implements GoodsService {
 			if(goods.getIsDelete()!=null && goods.getIsDelete().length()>0){
 				criteria.andIsDeleteLike("%"+goods.getIsDelete()+"%");
 			}
+            criteria.andIsDeleteIsNull();
 	
 		}
 		
 		Page<TbGoods> page= (Page<TbGoods>)goodsMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+    @Override
+    public void updateAuditStatus(Long[] ids, String auditStatus) {
+        for (Long id : ids) {
+            TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+            tbGoods.setAuditStatus(auditStatus);
+            goodsMapper.updateByPrimaryKey(tbGoods);
+        }
+    }
+
+    @Override
+    public void updateIsMarketable(Long[] ids, String isMarketable) {
+        for (Long id : ids) {
+            TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+            tbGoods.setIsMarketable(isMarketable);
+            goodsMapper.updateByPrimaryKey(tbGoods);
+        }
+    }
 }

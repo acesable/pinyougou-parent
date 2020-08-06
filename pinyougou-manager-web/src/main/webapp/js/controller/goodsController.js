@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller,goodsService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -55,16 +55,19 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 	//批量删除 
 	$scope.dele=function(){			
 		//获取选中的复选框			
-		goodsService.dele( $scope.selectIds ).success(
+		goodsService.dele( $scope.ids ).success(
 			function(response){
 				if(response.success){
 					$scope.reloadList();//刷新列表
+                    $scope.ids = [];
 				}						
 			}		
 		);				
 	}
-	
-	$scope.searchEntity={};//定义搜索对象 
+
+    $scope.auditStatusValue = ['未审核','已审核','审核未通过','已关闭'];
+
+	$scope.searchEntity={auditStatus:0};//定义搜索对象
 	
 	//搜索
 	$scope.search=function(page,rows){			
@@ -75,5 +78,28 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}			
 		);
 	}
+
+    $scope.itemCatKeyValue = {};
+
+    $scope.getItemCat = function () {
+        itemCatService.findAll().success(function (response) {
+            var itemCatList = response;
+            for(var i=0;i<itemCatList.length;i++){
+                $scope.itemCatKeyValue[itemCatList[i].id]=itemCatList[i].name;
+            }
+
+        });
+    };
+
+    $scope.updateAuditStatus = function (auditStatus) {
+        goodsService.updateAuditStatus($scope.ids, auditStatus).success(function (response) {
+            if(response.success){
+                $scope.reloadList();
+                $scope.ids = [];
+            }else{
+                alert(response.message);
+            }
+        });
+    }
     
 });	

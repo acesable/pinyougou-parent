@@ -59,5 +59,15 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
+
+    /**
+     * 更新审核状态
+     */
+    void updateAuditStatus(Long[] ids, String auditStatus);
+
+    /**
+     * 更新上下架状态
+     */
+    void updateIsMarketable(Long[] ids, String isMarketable);
 	
 }
