@@ -1,5 +1,5 @@
  //控制层 
-app.controller('contentController' ,function($scope,$controller   ,contentService){	
+app.controller('contentController' ,function($scope,$controller,contentService,uploadService,contentCategoryService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -55,7 +55,7 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 	//批量删除 
 	$scope.dele=function(){			
 		//获取选中的复选框			
-		contentService.dele( $scope.selectIds ).success(
+		contentService.dele( $scope.ids ).success(
 			function(response){
 				if(response.success){
 					$scope.reloadList();//刷新列表
@@ -74,6 +74,27 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
-	}
+	};
+
+    //上传图片
+    $scope.uploadFile=function () {
+        uploadService.uploadFile().success(function (response) {
+            if(response.success){
+                // alert('上传成功!');
+                $scope.entity.pic=response.message;
+            }else{
+                alert(response.message);
+            }
+        }).error(function () {
+            alert('上传发生错误');
+        });
+    };
+
+    //获取内容类别列表
+    $scope.selectContentCategoryList = function () {
+        contentCategoryService.findAll().success(function (response) {
+            $scope.contentCategoryList = response;
+        });
+    };
     
 });	
