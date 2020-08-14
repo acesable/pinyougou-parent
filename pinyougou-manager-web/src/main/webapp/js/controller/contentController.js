@@ -96,5 +96,7 @@ app.controller('contentController' ,function($scope,$controller,contentService,u
             $scope.contentCategoryList = response;
         });
     };
+
+    $scope.statusValue = ['禁用','启用'];
     
 });	

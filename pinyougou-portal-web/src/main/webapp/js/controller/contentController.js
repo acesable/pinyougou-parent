@@ -6,7 +6,6 @@ app.controller('contentController', function ($scope, contentService) {
         contentService.selectContentListByCategoryId(categoryId).success(function (response) {
             $scope.contentList[categoryId] = response;
         });
-
     };
 
 });

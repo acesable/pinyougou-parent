@@ -674,7 +674,6 @@
                         <li data-target="#myCarousel" class="{{$index==0?'active':''}}" data-slide-to="{{$index}}" ng-repeat="content in contentList[1]"></li>
                     </ol>
                     <div class="carousel-inner">
-                        {{contentList[1]}}
                         <div class="{{$index==0?'active':''}} item" ng-repeat="content in contentList[1]">
                             <a href="{{content.url}}">
                                 <img src="{{content.pic}}"/>
