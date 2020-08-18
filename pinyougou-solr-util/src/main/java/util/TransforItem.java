@@ -30,18 +30,23 @@ public class TransforItem {
         System.out.println(tbItems.size());
         for (TbItem item : tbItems) {
             System.out.println(item.getId()+" | "+item.getTitle()+" | "+item.getPrice());
-//            Map spec = JSON.parseObject(item.getSpec(), Map.class);
-//            item.setSpecMap(spec);
+            Map spec = JSON.parseObject(item.getSpec(), Map.class);
+            item.setSpecMap(spec);
         }
-//        solrTemplate.saveBeans(tbItems);
-//        solrTemplate.commit();
+        System.out.println(222);
+        solrTemplate.saveBeans(tbItems);
+        solrTemplate.commit();
+
 
     }
 
     public static void main(String[] args) {
         ApplicationContext context= new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
         TransforItem transforItem = (TransforItem) context.getBean("transforItem");
-        System.out.println("1231231231234556");
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
+        TransforItem transforItem = (TransforItem) classPathXmlApplicationContext.getBean("transforItem");
+        System.out.println(111);
+
         transforItem.transfor();
 
     }
