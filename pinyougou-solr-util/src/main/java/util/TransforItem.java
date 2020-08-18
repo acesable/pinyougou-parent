@@ -32,6 +32,7 @@ public class TransforItem {
             Map spec = JSON.parseObject(item.getSpec(), Map.class);
             item.setSpecMap(spec);
         }
+        System.out.println(222);
         solrTemplate.saveBeans(tbItems);
         solrTemplate.commit();
 
@@ -40,6 +41,7 @@ public class TransforItem {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
         TransforItem transforItem = (TransforItem) classPathXmlApplicationContext.getBean("transforItem");
+        System.out.println(111);
         transforItem.transfor();
     }
 
