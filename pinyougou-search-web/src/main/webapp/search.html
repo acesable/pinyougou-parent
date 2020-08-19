@@ -81,7 +81,7 @@
 										<!--searchAutoComplete-->
 										<div class="input-append">
 											<input type="text" id="autocomplete" ng-model="searchMap.keywords" type="text" class="input-error input-xxlarge" />
-											<button class="sui-btn btn-xlarge btn-danger" type="button" ng-click="searchItemList()">搜索</button>
+											<button class="sui-btn btn-xlarge btn-danger" type="button" ng-click="search()">搜索</button>
 										</div>
 									</form>
 								</div>
@@ -167,8 +167,12 @@
 			<!--selector-->
 			<div class="clearfix selector">
 				<div class="type-wrap">
-					<div class="fl key">手机、数码、配件</div>
-					<div class="fl value"></div>
+					<div class="fl key">商品分类</div>
+                    <div class="fl value">
+                        <span ng-repeat="category in resultMap.categoryList">
+                            <a href="#">{{category}}</a>
+                        </span>
+                    </div>
 					<div class="fl ext"></div>
 				</div>
 				<div class="type-wrap logo">
@@ -363,8 +367,7 @@
 											<i>{{item.price}}</i>
 										</strong>
 								</div>
-								<div class="attr">
-									<em>{{item.title}}</em>
+								<div class="attr" ng-bind-html="item.title | trustHtml">
 								</div>
 								<div class="cu">
 									<em><span>促</span>{{item.sellPoint}}</em>

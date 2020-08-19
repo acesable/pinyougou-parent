@@ -19,8 +19,8 @@ public class TransforItem {
     @Autowired
     TbItemMapper tbItemMapper;
 
-//    @Autowired
-//    SolrTemplate solrTemplate;
+    @Autowired
+    SolrTemplate solrTemplate;
 
     public void transfor() {
         TbItemExample tbItemExample = new TbItemExample();
@@ -43,9 +43,6 @@ public class TransforItem {
     public static void main(String[] args) {
         ApplicationContext context= new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
         TransforItem transforItem = (TransforItem) context.getBean("transforItem");
-        ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath*:spring/applicationContext*.xml");
-        TransforItem transforItem = (TransforItem) classPathXmlApplicationContext.getBean("transforItem");
-        System.out.println(111);
 
         transforItem.transfor();
 
