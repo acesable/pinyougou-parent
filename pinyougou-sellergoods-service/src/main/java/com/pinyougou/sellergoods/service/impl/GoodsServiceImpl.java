@@ -25,7 +25,7 @@ import pojoGroup.Goods;
  * @author Administrator
  *
  */
-@Service
+@Service(timeout = 5000)
 @Transactional
 public class GoodsServiceImpl implements GoodsService {
 

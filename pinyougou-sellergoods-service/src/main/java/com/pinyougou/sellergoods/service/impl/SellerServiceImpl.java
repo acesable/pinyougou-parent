@@ -18,7 +18,7 @@ import entity.PageResult;
  * @author Administrator
  *
  */
-@Service
+@Service(timeout = 5000)
 public class SellerServiceImpl implements SellerService {
 
 	@Autowired

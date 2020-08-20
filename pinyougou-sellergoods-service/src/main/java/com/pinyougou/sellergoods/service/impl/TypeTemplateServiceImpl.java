@@ -2,6 +2,7 @@ package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
@@ -17,13 +18,14 @@ import com.pinyougou.pojo.TbTypeTemplateExample.Criteria;
 import com.pinyougou.sellergoods.service.TypeTemplateService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
  * @author Administrator
  *
  */
-@Service
+@Service(timeout = 5000)
 public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 	@Autowired
@@ -111,9 +113,27 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 	
 		}
 		
-		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);		
+		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
+
+		selectTypeTemplate();
+
 		return new PageResult(page.getTotal(), page.getResult());
 	}
+
+	@Autowired
+    private RedisTemplate redisTemplate;
+
+	//缓存该分类的品牌列表
+    public void selectTypeTemplate() {
+        List<TbTypeTemplate> tbTypeTemplates = typeTemplateMapper.selectByExample(null);
+        for (TbTypeTemplate typeTemplate : tbTypeTemplates) {
+            List<Map> brandIds = JSON.parseArray(typeTemplate.getBrandIds(), Map.class);
+            redisTemplate.boundHashOps("brands").put(typeTemplate.getId(),brandIds);
+
+            redisTemplate.boundHashOps("specItems").put(typeTemplate.getId(),selectSpecificationItems(typeTemplate.getId()));
+        }
+        System.out.println("~~缓存品牌和规格成功");
+    }
 
     @Override
     public List<Map> selectTypeTemplateList() {

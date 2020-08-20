@@ -11,13 +11,14 @@ import com.pinyougou.pojo.TbItemCatExample.Criteria;
 import com.pinyougou.sellergoods.service.ItemCatService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
  * @author Administrator
  *
  */
-@Service
+@Service(timeout = 10000)
 public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
@@ -102,11 +103,20 @@ public class ItemCatServiceImpl implements ItemCatService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
     @Override
     public List<TbItemCat> findItemCatByParentId(Long parentId) {
 	    TbItemCatExample tbItemCatExample = new TbItemCatExample();
         Criteria criteria = tbItemCatExample.createCriteria();
         criteria.andParentIdEqualTo(parentId);
+
+        List<TbItemCat> tbItemCats = itemCatMapper.selectByExample(null);
+        for (TbItemCat itemCat : tbItemCats) {
+            redisTemplate.boundHashOps("itemCats").put(itemCat.getName(),itemCat.getTypeId());
+        }
+        System.out.println("~~缓存分类列表成功");
         return itemCatMapper.selectByExample(tbItemCatExample);
     }
 

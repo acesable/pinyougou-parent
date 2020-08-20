@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(timeout = 5000)
 public class BrandServiceImpl implements BrandService {
 
     @Autowired

@@ -5,6 +5,7 @@ import com.pinyougou.pojo.TbItem;
 import com.pinyougou.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
 import org.springframework.data.solr.core.query.result.*;
@@ -19,12 +20,21 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private SolrTemplate solrTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
     
     @Override
     public Map search(Map searchMap) {
         Map resultMap = new HashMap();
         resultMap.putAll(searchItemList(searchMap));
-        resultMap.put("categoryList", searchCategory(searchMap));
+        List categoryList=searchCategory(searchMap);
+        resultMap.put("categoryList", categoryList);
+        if (categoryList.size() > 0) {
+            Long categoryId = (Long) redisTemplate.boundHashOps("itemCats").get(categoryList.get(0));
+            resultMap.put("brands", selectBrands(categoryId));
+            resultMap.put("specItems", selectSpecItems(categoryId));
+        }
         return resultMap;
     }
 
@@ -90,4 +100,14 @@ public class SearchServiceImpl implements SearchService {
         }
         return categoryList;
     }
+
+    public List selectBrands(Long id) {
+        return (List) redisTemplate.boundHashOps("brands").get(id);
+    }
+
+    public List selectSpecItems(Long id) {
+        return (List) redisTemplate.boundHashOps("specItems").get(id);
+    }
+
+
 }
