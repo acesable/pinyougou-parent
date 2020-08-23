@@ -65,14 +65,12 @@ public class SearchServiceImpl implements SearchService {
         //2 筛选条件
         //2.1 商品分类
         if(!"".equals(searchMap.get("category"))){
-            System.out.println(111);
             Criteria filterCriteria = new Criteria("item_category").is(searchMap.get("category"));
             FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
             highlightQuery.addFilterQuery(filterQuery);
         }
         //2.2 品牌
         if(!"".equals(searchMap.get("brand"))){
-            System.out.println(222);
             Criteria filterCriteria = new Criteria("item_brand").is(searchMap.get("brand"));
             FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
             highlightQuery.addFilterQuery(filterQuery);
@@ -87,11 +85,31 @@ public class SearchServiceImpl implements SearchService {
                 }
         }
 
+        //2.4 价格区间
+        if(!"".equals(searchMap.get("price"))){
+            String[] price = ((String)searchMap.get("price")).split("-");
+            if(!"0".equals(price[0])){
+                Criteria filterCriteria = new Criteria("item_price").greaterThanEqual(price[0]);
+                FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
+                highlightQuery.addFilterQuery(filterQuery);
+            }
+            if(!"*".equals(price[1])){
+                Criteria filterCriteria = new Criteria("item_price").lessThanEqual(price[1]);
+                FilterQuery filterQuery = new SimpleFilterQuery(filterCriteria);
+                highlightQuery.addFilterQuery(filterQuery);
+            }
+        }
+
+        //2.5 分页
+        Integer pageNum = searchMap.get("pageNum")==null?1:(Integer)searchMap.get("pageNum");
+        Integer pageSize = searchMap.get("pageSize")==null?20:(Integer)searchMap.get("pageSize");
+        highlightQuery.setOffset((pageNum-1)*pageSize);
+        highlightQuery.setRows(pageSize);
+
         // 3 获取结果
         HighlightPage<TbItem> tbItems = solrTemplate.queryForHighlightPage(highlightQuery, TbItem.class);
         // 高亮内容的入口集合(多条记录)
         List<HighlightEntry<TbItem>> highlighted = tbItems.getHighlighted();
-
         for (HighlightEntry<TbItem> highlightEntry : highlighted) {
             /*//高亮域个数(设置了多少个高亮field)
             List<HighlightEntry.Highlight> highlights = highlightEntry.getHighlights();
@@ -99,11 +117,16 @@ public class SearchServiceImpl implements SearchService {
                 //每个高亮域可能存储多值(复值域)
                 System.out.println(highlight.getSnipplets());
             }*/
-            //因为只有一个
-            highlightEntry.getEntity().setTitle(highlightEntry.getHighlights().get(0).getSnipplets().get(0));
+            //增加了判断是因为如果高亮区域没有搜索的关键字, 高亮的搜索结果就是空数组 highlightEntry.getHighlights().size()=0
+            if(highlightEntry.getHighlights().size()>0 && highlightEntry.getHighlights().get(0).getSnipplets().size()>0){
+                //因为只有一个
+                highlightEntry.getEntity().setTitle(highlightEntry.getHighlights().get(0).getSnipplets().get(0));
+            }
         }
 
         resultMap.put("rows", tbItems.getContent());
+        resultMap.put("totalPageNum", tbItems.getTotalPages());
+        resultMap.put("totalNum", tbItems.getTotalElements());
         return resultMap;
     }
 
