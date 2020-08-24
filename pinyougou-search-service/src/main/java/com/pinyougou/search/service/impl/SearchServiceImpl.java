@@ -58,7 +58,8 @@ public class SearchServiceImpl implements SearchService {
         highlightOptions.setSimplePrefix("<em style='color:red'>").setSimplePostfix("</em>");
         highlightQuery.setHighlightOptions(highlightOptions);
 
-        Criteria criteria = new Criteria("item_keywords").is(searchMap.get("keywords"));
+        String keywords = (String) searchMap.get("keywords");
+        Criteria criteria = new Criteria("item_keywords").is(keywords.replace(" ",""));
         highlightQuery.addCriteria(criteria);
 
 
@@ -105,6 +106,12 @@ public class SearchServiceImpl implements SearchService {
         Integer pageSize = searchMap.get("pageSize")==null?20:(Integer)searchMap.get("pageSize");
         highlightQuery.setOffset((pageNum-1)*pageSize);
         highlightQuery.setRows(pageSize);
+
+        //2.6 排序
+        String sort = (String) searchMap.get("sort");
+        String sortField = (String) searchMap.get("sortField");
+
+
 
         // 3 获取结果
         HighlightPage<TbItem> tbItems = solrTemplate.queryForHighlightPage(highlightQuery, TbItem.class);
