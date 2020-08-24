@@ -5,6 +5,7 @@ import com.pinyougou.pojo.TbItem;
 import com.pinyougou.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
@@ -110,7 +111,17 @@ public class SearchServiceImpl implements SearchService {
         //2.6 排序
         String sort = (String) searchMap.get("sort");
         String sortField = (String) searchMap.get("sortField");
-
+        if(sortField!=null && !sortField.equals("")){
+            Sort orders;
+            if(sort.equals("asc")){
+                orders = new Sort(Sort.Direction.ASC,"item_"+sortField);
+            }else if(sort.equals("desc")){
+                orders = new Sort(Sort.Direction.DESC,"item_"+sortField);
+            }else{
+                orders = new Sort("item_"+sortField);
+            }
+            highlightQuery.addSort(orders);
+        }
 
 
         // 3 获取结果

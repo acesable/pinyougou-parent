@@ -1,6 +1,6 @@
 app.controller("searchController", function ($scope, searchService) {
 
-    $scope.searchMap={keywords:'', category:'', brand:'', spec: {}, price:'', pageNum:1, pageSize:15};
+    $scope.searchMap={keywords:'', category:'', brand:'', spec: {}, price:'', pageNum:1, pageSize:15, sort:'', sortField:''};
 
     $scope.search = function () {
         searchService.search($scope.searchMap).success(function (response) {
@@ -51,6 +51,12 @@ app.controller("searchController", function ($scope, searchService) {
                 $scope.pageLabel.push(i);
             }
         }
+    }
+
+    $scope.searchByOrder=function (sort,sortField) {
+        $scope.searchMap.sort=sort;
+        $scope.searchMap.sortField = sortField;
+        $scope.searchByPage(1);
     }
 
 });
