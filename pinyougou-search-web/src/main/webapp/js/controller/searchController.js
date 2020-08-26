@@ -1,4 +1,4 @@
-app.controller("searchController", function ($scope, searchService) {
+app.controller("searchController", function ($scope, $location, searchService) {
 
     $scope.searchMap={keywords:'', category:'', brand:'', spec: {}, price:'', pageNum:1, pageSize:15, sort:'', sortField:''};
 
@@ -56,6 +56,21 @@ app.controller("searchController", function ($scope, searchService) {
     $scope.searchByOrder=function (sort,sortField) {
         $scope.searchMap.sort=sort;
         $scope.searchMap.sortField = sortField;
+        $scope.searchByPage(1);
+    }
+
+    $scope.isContentBrand=function () {
+        var brandList = $scope.resultMap.brands;
+        for(var i=0; i<brandList.length;i++){
+            if($scope.searchMap.keywords.indexOf(brandList[i].text)>-1){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.beRedirect=function () {
+        $scope.searchMap.keywords= $location.search()['keywords'];
         $scope.searchByPage(1);
     }
 

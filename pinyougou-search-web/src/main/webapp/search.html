@@ -17,7 +17,7 @@
         <script type="text/javascript" src="js/service/searchService.js"></script>
 	</head>
 
-	<body ng-app="pinyougou" ng-controller="searchController">
+	<body ng-app="pinyougou" ng-controller="searchController" ng-init="beRedirect()">
 		<!-- 头部栏位 -->
 		<!--页面顶部-->
 		<div id="nav-bottom">
@@ -173,7 +173,7 @@
                     </div>
 					<div class="fl ext"></div>
 				</div>
-				<div class="type-wrap logo" ng-if="resultMap.brands!=null && searchMap.brand==''">
+				<div class="type-wrap logo" ng-if="resultMap.brands!=null && searchMap.brand=='' && isContentBrand()==false">
 					<div class="fl key brand">品牌</div>
 					<div class="value logos">
 						<ul class="logo-list">
