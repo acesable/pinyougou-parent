@@ -1,6 +1,8 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.service.SearchService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,6 +100,9 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 
+	@Reference(timeout = 100000)
+	private SearchService searchService;
+
     /**
      * 更新审核状态
      */
@@ -105,11 +110,16 @@ public class GoodsController {
     public Result updateAuditStatus(Long[] ids, String auditStatus) {
         try {
             goodsService.updateAuditStatus(ids, auditStatus);
+            if ("1".equals(auditStatus)) {//审核通过
+                //等到需要导入的sku列表
+                List<TbItem> itemListByGoodsIdListAndStatus = goodsService.findItemListByGoodsIdListAndStatus(ids, auditStatus);
+                searchService.importList(itemListByGoodsIdListAndStatus);
+            }
             return new Result(true, "审核成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "审核失败");
         }
     }
-	
+
 }

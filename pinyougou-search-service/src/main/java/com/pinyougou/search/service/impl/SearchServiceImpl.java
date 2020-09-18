@@ -181,5 +181,9 @@ public class SearchServiceImpl implements SearchService {
         return (List) redisTemplate.boundHashOps("specItems").get(id);
     }
 
-
+    @Override
+    public void importList(List list) {
+        solrTemplate.saveBeans(list);
+        solrTemplate.commit();
+    }
 }
