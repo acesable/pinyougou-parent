@@ -1,6 +1,7 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.service.SearchService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -121,5 +122,17 @@ public class GoodsController {
             return new Result(false, "审核失败");
         }
     }
+
+    @Reference(timeout = 400000)
+    private ItemPageService itemPageService;
+
+    @RequestMapping("/getItemHtml")
+    public void getItemHtml(Long goodsId) {
+        System.out.println(itemPageService.getItemHtml(goodsId));
+    }
+
+
+
+
 
 }
