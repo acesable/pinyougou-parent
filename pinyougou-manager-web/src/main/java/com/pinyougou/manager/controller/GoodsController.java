@@ -128,7 +128,7 @@ public class GoodsController {
 
     @RequestMapping("/getItemHtml")
     public void getItemHtml(Long goodsId) {
-        System.out.println(itemPageService.getItemHtml(goodsId));
+        itemPageService.getItemHtml(goodsId);
     }
 
 

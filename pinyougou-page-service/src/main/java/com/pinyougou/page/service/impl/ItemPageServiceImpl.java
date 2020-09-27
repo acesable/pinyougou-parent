@@ -1,5 +1,6 @@
 package com.pinyougou.page.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.page.service.ItemPageService;
@@ -18,12 +19,13 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class ItemPageServiceImpl implements ItemPageService {
 
     @Autowired
     private FreeMarkerConfigurer freemarkerConfig;
 
-    @Value("pageDir")
+    @Value("${pageDir}")
     private String pageDir;
 
     @Autowired
@@ -38,7 +40,7 @@ public class ItemPageServiceImpl implements ItemPageService {
         Configuration configuration = freemarkerConfig.getConfiguration();
         try {
             Template template = configuration.getTemplate("item.ftl");
-            Writer out = new FileWriter(new File(pageDir + goodsId + ".html"));
+            Writer out = new FileWriter(pageDir + goodsId + ".html");
             //插值
             TbGoods goods = tbGoodsMapper.selectByPrimaryKey(goodsId);
             TbGoodsDesc goodsDesc = tbGoodsDescMapper.selectByPrimaryKey(goodsId);
