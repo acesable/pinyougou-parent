@@ -3,9 +3,10 @@ package com.pinyougou.page.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
+import com.pinyougou.mapper.TbItemCatMapper;
+import com.pinyougou.mapper.TbItemMapper;
 import com.pinyougou.page.service.ItemPageService;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojo.TbGoodsDesc;
+import com.pinyougou.pojo.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,6 +36,12 @@ public class ItemPageServiceImpl implements ItemPageService {
     @Autowired
     private TbGoodsDescMapper tbGoodsDescMapper;
 
+    @Autowired
+    private TbItemCatMapper tbItemCatMapper;
+
+    @Autowired
+    private TbItemMapper tbItemMapper;
+
     @Override
     public boolean getItemHtml(Long goodsId) {
 
@@ -47,6 +55,20 @@ public class ItemPageServiceImpl implements ItemPageService {
             Map valueMap = new HashMap();
             valueMap.put("goods", goods);
             valueMap.put("goodsDesc", goodsDesc);
+            String itemCat1 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory1Id()).getName();
+            String itemCat2 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory2Id()).getName();
+            String itemCat3 = tbItemCatMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
+            valueMap.put("itemCat1", itemCat1);
+            valueMap.put("itemCat2", itemCat2);
+            valueMap.put("itemCat3", itemCat3);
+
+            TbItemExample itemExample = new TbItemExample();
+            TbItemExample.Criteria criteria = itemExample.createCriteria();
+            criteria.andGoodsIdEqualTo(goodsId);
+            itemExample.setOrderByClause("is_default desc");
+            List<TbItem> itemList = tbItemMapper.selectByExample(itemExample);
+            valueMap.put("itemList", itemList);
+
             template.process(valueMap,out);
             out.close();
         } catch (Exception e) {

@@ -12,28 +12,46 @@
     <link rel="stylesheet" type="text/css" href="css/pages-item.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-zoom.css" />
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
+
+    <script type="text/javascript" src="plugins/angularjs/angular.min.js">  </script>
+    <script type="text/javascript" src="js/base.js">  </script>
+    <script type="text/javascript" src="js/controller/itemPageController.js">  </script>
+
+    <script>
+        var skuList = [
+                <#list itemList as item>
+                    {
+                        id:${item.id?c},
+                        title:'${item.title}',
+                        price:${item.price?c},
+                        spec:${item.spec}
+                    },
+                </#list>
+            ];
+        JSON.string
+    </script>
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="itemPageController" ng-init="itemNum=1;defaultItem()">
 
 <!--页面顶部 开始-->
 <#include "head.ftl">
 <#assign itemList=goodsDesc.itemImages?eval>
+<#assign specificationList=goodsDesc.specificationItems?eval>
 <!--页面顶部 结束-->
 	<div class="py-container">
 		<div id="item">
 			<div class="crumb-wrap">
 				<ul class="sui-breadcrumb">
 					<li>
-						<a href="#">手机、数码、通讯</a>
+						<a href="#">${itemCat1}</a>
 					</li>
 					<li>
-						<a href="#">手机</a>
+						<a href="#">${itemCat2}</a>
 					</li>
 					<li>
-						<a href="#">Apple苹果</a>
+						<a href="#">${itemCat3}</a>
 					</li>
-					<li class="active">iphone 6S系类</li>
 				</ul>
 			</div>
 			<!--product-info-->
@@ -43,7 +61,7 @@
 					<div class="zoom">
 						<!--默认第一个预览-->
 						<div id="preview" class="spec-preview">
-							<span class="jqzoom"><img jqimg="${itemList[0].url}" src="img/_/s1.png" height="400px" width="400px"/></span>
+							<span class="jqzoom"><img jqimg="${itemList[0].url}" src="${itemList[0].url}" height="400px" width="400px"/></span>
 						</div>
 						<!--下方的缩略图-->
 						<div class="spec-scroll">
@@ -62,7 +80,7 @@
 				</div>
 				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4>${goods.goodsName}</h4>
+						<h4>{{currentItem.title}}</h4>
 					</div>
 					<div class="news"><span>${goods.caption}</span></div>
 					<div class="summary">
@@ -72,7 +90,7 @@
 							</div>
 							<div class="fl price">
 								<i>¥</i>
-								<em>${goods.price}</em>
+								<em>{{currentItem.price}}</em>
 								<span>降价通知</span>
 							</div>
 							<div class="fr remark">
@@ -108,73 +126,30 @@
 							</div>
 						</div>
 					</div>
+                    {{specificationMap}}
 					<div class="clearfix choose">
 						<div id="specification" class="summary-wrap clearfix">
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择颜色</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">银色</a></dd>
-								<dd><a href="javascript:;">黑色</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>内存容量</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">16G<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">64G</a></dd>
-								<dd><a href="javascript:;" class="locked">128G</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>选择版本</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">公开版<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动版</a></dd>							
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>购买方式</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">官方标配<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;">移动优惠版</a></dd>	
-								<dd><a href="javascript:;"  class="locked">电信优惠版</a></dd>
-							</dl>
-							<dl>
-								<dt>
-									<div class="fl title">
-									<i>套　　装</i>
-								</div>
-								</dt>
-								<dd><a href="javascript:;" class="selected">保护套装<span title="点击取消选择">&nbsp;</span>
-</a></dd>
-								<dd><a href="javascript:;"  class="locked">充电套装</a></dd>	
-								
-							</dl>
-							
-							
+                            <#list specificationList as specification>
+                                <dl>
+                                    <dt>
+                                        <div class="fl title">
+                                        <i>${specification.attributeName}</i>
+                                    </div>
+                                    </dt>
+                                    <#list specification.attributeValue as value>
+                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('${specification.attributeName}','${value}')?'selected':''}}" ng-click="selectSpecificationItem('${specification.attributeName}','${value}')">${value}<span title="点击取消选择">&nbsp;</span></a></dd>
+                                    </#list>
+                                </dl>
+                            </#list>
 						</div>
 					
 						<div class="summary-wrap">
 							<div class="fl title">
 								<div class="control-group">
 									<div class="controls">
-										<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
-										<a href="javascript:void(0)" class="increment plus">+</a>
-										<a href="javascript:void(0)" class="increment mins">-</a>
+										<input autocomplete="off" type="text" value="{{itemNum}}" minnum="1" class="itxt" />
+										<a href="javascript:void(0)" class="increment plus" ng-click="addItemNum(1)">+</a>
+										<a href="javascript:void(0)" class="increment mins" ng-click="addItemNum(-1)">-</a>
 									</div>
 								</div>
 							</div>

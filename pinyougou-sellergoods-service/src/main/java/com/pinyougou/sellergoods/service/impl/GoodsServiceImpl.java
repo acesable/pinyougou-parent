@@ -74,7 +74,6 @@ public class GoodsServiceImpl implements GoodsService {
         goods.getGoods().setAuditStatus("0");// 状态未审核
         goods.getGoods().setIsMarketable("1");//新增商品默认为:已上架 状态
 		goodsMapper.insert(goods.getGoods());
-		int x=1/0;
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
         goodsDescMapper.insert(goods.getGoodsDesc());
         setItemValue(goods);
@@ -105,7 +104,7 @@ public class GoodsServiceImpl implements GoodsService {
             item.setTitle(tbGoods.getGoodsName());
             item.setPrice(tbGoods.getPrice());
             item.setNum(999999);
-            item.setStatus("0");
+            item.setStatus("1");
             item.setIsDefault("1");
 
             setDefaultItemValue(item, goods);
