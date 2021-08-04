@@ -114,7 +114,7 @@
         </dependency>
         <dependency>
             <groupId>com.pinyougou</groupId>
-            <artifactId>pingyougou-content-interface</artifactId>
+            <artifactId>pinyougou-content-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
