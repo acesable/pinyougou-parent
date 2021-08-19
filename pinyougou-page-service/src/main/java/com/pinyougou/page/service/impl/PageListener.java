@@ -20,7 +20,7 @@ public class PageListener implements MessageListener {
         TextMessage textMessage = (TextMessage) message;
         try {
             boolean itemHtml = itemPageService.getItemHtml(Long.parseLong(textMessage.getText()));
-            System.out.println("静态网页生成结果: "+"textMessage.getText() | " + itemHtml);
+            System.out.println("静态网页生成结果: "+textMessage.getText() +" | " + itemHtml);
         } catch (JMSException e) {
             e.printStackTrace();
         }

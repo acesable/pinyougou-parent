@@ -48,6 +48,7 @@ public class ItemPageServiceImpl implements ItemPageService {
         try {
             Template template = configuration.getTemplate("item.ftl");
             Writer out = new FileWriter(pageDir + goodsId + ".html");
+            System.out.println(pageDir + goodsId + ".html");
             //插值
             TbGoods goods = tbGoodsMapper.selectByPrimaryKey(goodsId);
             TbGoodsDesc goodsDesc = tbGoodsDescMapper.selectByPrimaryKey(goodsId);

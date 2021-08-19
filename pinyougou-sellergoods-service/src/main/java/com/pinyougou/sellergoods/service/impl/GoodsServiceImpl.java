@@ -138,7 +138,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public void update(Goods goods){
 		goodsMapper.updateByPrimaryKey(goods.getGoods());
         goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
-        int x = 1/0;
+//        int x = 1/0;
         setItemValue(goods);
 	}	
 	

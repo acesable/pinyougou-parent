@@ -20,27 +20,15 @@
     <script>
         var skuList = [
                                     {
-                        id:1369290,
-                        title:'DELL XPS 2 --基地 电信4G 32G',
-                        price:2000,
-                        spec:{"网络":"电信4G","机身内存":"32G"}
+                        id:1369286,
+                        title:'dell 移动3G 16G',
+                        price:999,
+                        spec:{"网络":"移动3G","机身内存":"16G"}
                     },
                     {
-                        id:1369291,
-                        title:'DELL XPS 2 --基地 电信4G 16G',
-                        price:1000,
-                        spec:{"网络":"电信4G","机身内存":"16G"}
-                    },
-                    {
-                        id:1369292,
-                        title:'DELL XPS 2 --基地 移动4G 32G',
-                        price:2001,
-                        spec:{"网络":"移动4G","机身内存":"32G"}
-                    },
-                    {
-                        id:1369293,
-                        title:'DELL XPS 2 --基地 移动4G 16G',
-                        price:1001,
+                        id:1369287,
+                        title:'dell 移动4G 16G',
+                        price:999,
                         spec:{"网络":"移动4G","机身内存":"16G"}
                     },
             ];
@@ -179,7 +167,7 @@
 					<div class="zoom">
 						<!--默认第一个预览-->
 						<div id="preview" class="spec-preview">
-							<span class="jqzoom"><img jqimg="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UKASsoAAARJapZrZ0Q006.jpg" src="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UKASsoAAARJapZrZ0Q006.jpg" height="400px" width="400px"/></span>
+							<span class="jqzoom"><img jqimg="http://192.168.25.133/group1/M00/00/00/wKgZhWEPenmAI-hcAAAOiIjAuC0299.png" src="http://192.168.25.133/group1/M00/00/00/wKgZhWEPenmAI-hcAAAOiIjAuC0299.png" height="400px" width="400px"/></span>
 						</div>
 						<!--下方的缩略图-->
 						<div class="spec-scroll">
@@ -187,9 +175,7 @@
 							<!--左右按钮-->
 							<div class="items">
 								<ul>
-									    <li><img src="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UKASsoAAARJapZrZ0Q006.jpg" bimg="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UKASsoAAARJapZrZ0Q006.jpg" onmousemove="preview(this)" /></li>
-									    <li><img src="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UmAI1IUAALzcnHneo4808.jpg" bimg="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9UmAI1IUAALzcnHneo4808.jpg" onmousemove="preview(this)" /></li>
-									    <li><img src="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9U-AKPHAAAd6ydvjYnY520.jpg" bimg="http://192.168.25.133/group1/M00/00/00/wKgZhV9y9U-AKPHAAAd6ydvjYnY520.jpg" onmousemove="preview(this)" /></li>
+									    <li><img src="http://192.168.25.133/group1/M00/00/00/wKgZhWEPenmAI-hcAAAOiIjAuC0299.png" bimg="http://192.168.25.133/group1/M00/00/00/wKgZhWEPenmAI-hcAAAOiIjAuC0299.png" onmousemove="preview(this)" /></li>
 								</ul>
 							</div>
 							<a class="next">&gt;</a>
@@ -200,7 +186,7 @@
 					<div class="sku-name">
 						<h4>{{currentItem.title}}</h4>
 					</div>
-					<div class="news"><span>最牛皮的电脑 第二代 --基地</span></div>
+					<div class="news"><span>xps</span></div>
 					<div class="summary">
 						<div class="summary-wrap">
 							<div class="fl title">
@@ -250,20 +236,19 @@
                                 <dl>
                                     <dt>
                                         <div class="fl title">
-                                        <i>网络</i>
+                                        <i>机身内存</i>
                                     </div>
                                     </dt>
-                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('网络','电信4G')?'selected':''}}" ng-click="selectSpecificationItem('网络','电信4G')">电信4G<span title="点击取消选择">&nbsp;</span></a></dd>
-                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('网络','移动4G')?'selected':''}}" ng-click="selectSpecificationItem('网络','移动4G')">移动4G<span title="点击取消选择">&nbsp;</span></a></dd>
+                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('机身内存','16G')?'selected':''}}" ng-click="selectSpecificationItem('机身内存','16G')">16G<span title="点击取消选择">&nbsp;</span></a></dd>
                                 </dl>
                                 <dl>
                                     <dt>
                                         <div class="fl title">
-                                        <i>机身内存</i>
+                                        <i>网络</i>
                                     </div>
                                     </dt>
-                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('机身内存','32G')?'selected':''}}" ng-click="selectSpecificationItem('机身内存','32G')">32G<span title="点击取消选择">&nbsp;</span></a></dd>
-                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('机身内存','16G')?'selected':''}}" ng-click="selectSpecificationItem('机身内存','16G')">16G<span title="点击取消选择">&nbsp;</span></a></dd>
+                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('网络','移动3G')?'selected':''}}" ng-click="selectSpecificationItem('网络','移动3G')">移动3G<span title="点击取消选择">&nbsp;</span></a></dd>
+                                        <dd><a href="javascript:;" class="{{isSpecificationItemSelected('网络','移动4G')?'selected':''}}" ng-click="selectSpecificationItem('网络','移动4G')">移动4G<span title="点击取消选择">&nbsp;</span></a></dd>
                                 </dl>
 						</div>
 					
@@ -280,7 +265,7 @@
 							<div class="fl">
 								<ul class="btn-choose unstyled">
 									<li>
-										<a href="#" ng-click="addToCar()" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+										<a ng-click="addToCar()" class="sui-btn  btn-danger addshopcar">加入购物车</a>
 									</li>
 								</ul>
 							</div>
@@ -517,19 +502,14 @@
 									<li>机身内存：64GB</li>
 								</ul>
 								<div class="intro-detail">
-                                    <p>
-	最牛皮的电脑 第二代 --基地
-</p>
-<p>
-	买买
-</p>
+                                    快来买把
 								</div>
 							</div>
 							<div id="two" class="tab-pane">
-								<p>电脑和电源</p>
+								<p>1</p>
 							</div>
 							<div id="three" class="tab-pane">
-								<p>终身不包</p>
+								<p>无</p>
 							</div>
 							<div id="four" class="tab-pane">
 								<p>商品评价</p>

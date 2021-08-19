@@ -33,7 +33,6 @@ public class TransforItem {
             Map spec = JSON.parseObject(item.getSpec(), Map.class);
             item.setSpecMap(spec);
         }
-        System.out.println(222);
         solrTemplate.saveBeans(tbItems);
         solrTemplate.commit();
 

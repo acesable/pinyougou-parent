@@ -1,4 +1,4 @@
-app.controller('itemPageController',function ($scope) {
+app.controller('itemPageController',function ($scope, $http) {
 
     // 改变购物数量
     $scope.addItemNum=function(num){
@@ -61,8 +61,16 @@ app.controller('itemPageController',function ($scope) {
         $scope.currentItem={id:0,title:'--没有该商品--',price:0};
     };
 
-    //将商品加入购物车
+    //将商品加入购物车 --添加了允许读取本域cookie的代码
     $scope.addToCar = function () {
-        window.alert('商品ID: ' + $scope.currentItem.id);
+        // window.alert('商品ID: ' + $scope.currentItem.id);
+        $http.get('http://localhost:9107/cart/addGoodsToCartList.do?itemId='+$scope.currentItem.id
+            +'&num='+$scope.itemNum, {'withCredentials':true}).success(function (response){
+                if(response.success){
+                    location.href="http://localhost:9107/cart.html";
+                }else{
+                    alert(response.message);
+                }
+        });
     };
 });
